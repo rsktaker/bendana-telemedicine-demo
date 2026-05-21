@@ -69,7 +69,29 @@ main {
   line-height: 1;
 }
 
-.site-header nav { display: flex; gap: 18px; font-size: 14px; }
+.site-header nav { display: flex; gap: 18px; align-items: center; font-size: 14px; }
+
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff;
+}
+.lang-toggle button {
+  background: transparent;
+  border: 0;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+.lang-toggle button.active {
+  background: var(--brand);
+  color: #fff;
+}
 
 .site-footer {
   max-width: 1080px;
@@ -120,6 +142,24 @@ main {
 .btn-dark { background: var(--brand); color: #fff; }
 .btn-dark:hover { background: var(--brand-strong); }
 .btn-ghost { background: transparent; color: var(--brand); border: 1px solid var(--line); }
+
+/* Telemedicine banner */
+.tele-banner {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.tele-banner h2 { margin: 0 0 4px; font-size: 18px; }
+.tele-banner p { margin: 0; color: var(--ink-soft); max-width: 640px; }
 
 /* Section heading */
 .section-h {

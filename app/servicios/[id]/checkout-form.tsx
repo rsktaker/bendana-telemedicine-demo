@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n";
 
 type Props = {
   serviceId: string;
@@ -21,6 +22,7 @@ export function CheckoutForm({
   telemedicine,
 }: Props) {
   const router = useRouter();
+  const { t } = useLang();
   const [submitting, setSubmitting] = useState(false);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -32,46 +34,38 @@ export function CheckoutForm({
     const slug = encodeURIComponent(serviceName);
     if (telemedicine) {
       const room = `bendana-${serviceId}-${code}`;
-      const params = new URLSearchParams({
-        name,
-        room,
-        service: slug,
-      });
+      const params = new URLSearchParams({ name, room, service: slug });
       router.push(`/consulta?${params.toString()}`);
     } else {
-      const params = new URLSearchParams({
-        name,
-        code,
-        service: slug,
-      });
+      const params = new URLSearchParams({ name, code, service: slug });
       router.push(`/confirmacion?${params.toString()}`);
     }
   }
 
   return (
     <form className="checkout" onSubmit={onSubmit}>
-      <h3>Reserva y pago</h3>
+      <h3>{t("reserve_pay")}</h3>
       <div className="total">
-        <span>Total</span>
+        <span>{t("total")}</span>
         <strong>C$ {priceCordobas.toLocaleString("es-NI")}</strong>
       </div>
 
       <label className="field">
-        <span>Nombre completo</span>
-        <input name="name" required placeholder="María Pérez" />
+        <span>{t("full_name")}</span>
+        <input name="name" required placeholder={t("full_name_ph")} />
       </label>
       <label className="field">
-        <span>Correo electrónico</span>
-        <input name="email" type="email" required placeholder="maria@correo.com" />
+        <span>{t("email")}</span>
+        <input name="email" type="email" required placeholder={t("email_ph")} />
       </label>
       <label className="field">
-        <span>Teléfono</span>
-        <input name="phone" required placeholder="+505 8888 8888" />
+        <span>{t("phone")}</span>
+        <input name="phone" required placeholder={t("phone_ph")} />
       </label>
 
-      <h4 style={{ margin: "16px 0 8px", fontSize: 14 }}>Pago (demo)</h4>
+      <h4 style={{ margin: "16px 0 8px", fontSize: 14 }}>{t("payment_demo")}</h4>
       <label className="field">
-        <span>Tarjeta</span>
+        <span>{t("card")}</span>
         <input
           name="card"
           inputMode="numeric"
@@ -81,11 +75,11 @@ export function CheckoutForm({
       </label>
       <div className="field-row">
         <label className="field">
-          <span>Vence</span>
+          <span>{t("expires")}</span>
           <input name="exp" placeholder="12/29" defaultValue="12/29" />
         </label>
         <label className="field">
-          <span>CVC</span>
+          <span>{t("cvc")}</span>
           <input name="cvc" placeholder="123" defaultValue="123" />
         </label>
       </div>
@@ -97,13 +91,13 @@ export function CheckoutForm({
         disabled={submitting}
       >
         {submitting
-          ? "Procesando…"
+          ? t("processing")
           : telemedicine
-            ? "Pagar y entrar a la videollamada"
-            : "Pagar y obtener código"}
+            ? t("pay_join_video")
+            : t("pay_get_code")}
       </button>
       <p className="muted" style={{ marginTop: 10 }}>
-        Demo — no se cobra dinero real ni se guardan datos.
+        {t("demo_notice")}
       </p>
     </form>
   );

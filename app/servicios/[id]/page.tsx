@@ -1,43 +1,43 @@
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getService, services } from "@/lib/services";
+import { notFound, useParams } from "next/navigation";
+import { getService } from "@/lib/services";
+import { useLang } from "@/lib/i18n";
 import { CheckoutForm } from "./checkout-form";
 
-export function generateStaticParams() {
-  return services.map((s) => ({ id: s.id }));
-}
-
-export default async function ServicioDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const service = getService(id);
-  if (!service) notFound();
+export default function ServicioDetailPage() {
+  const params = useParams<{ id: string }>();
+  const { lang, t } = useLang();
+  const service = getService(params.id);
+  if (!service) {
+    notFound();
+  }
 
   return (
     <>
       <div style={{ marginBottom: 16 }}>
         <Link href="/servicios" className="muted">
-          ← Volver a servicios
+          {t("back_to_services")}
         </Link>
       </div>
       <div className="detail">
         <div>
           <div style={{ fontSize: 40, marginBottom: 8 }}>{service.icon}</div>
-          <h1>{service.name}</h1>
-          <p className="lede">{service.longDescription}</p>
+          <h1>{service.name[lang]}</h1>
+          <p className="lede">{service.longDescription[lang]}</p>
 
           <span className={`badge ${service.telemedicine ? "badge-tele" : ""}`}>
             {service.telemedicine
-              ? "Atención por videollamada"
-              : "Atención presencial en el hospital"}
+              ? t("attention_video")
+              : t("attention_in_person")}
           </span>
 
-          <h3 style={{ marginTop: 24, marginBottom: 6, fontSize: 16 }}>Incluye</h3>
+          <h3 style={{ marginTop: 24, marginBottom: 6, fontSize: 16 }}>
+            {t("includes")}
+          </h3>
           <ul>
-            {service.includes.map((line) => (
+            {service.includes[lang].map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>
@@ -45,7 +45,7 @@ export default async function ServicioDetailPage({
 
         <CheckoutForm
           serviceId={service.id}
-          serviceName={service.name}
+          serviceName={service.name[lang]}
           priceCordobas={service.priceCordobas}
           telemedicine={service.telemedicine}
         />

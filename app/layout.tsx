@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./providers";
+import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
 
 export const metadata: Metadata = {
   title: "Hospital Bendaña — Servicios en línea",
@@ -15,24 +18,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <header className="site-header">
-          <a className="brand" href="/">
-            <span className="brand-mark" aria-hidden>+</span>
-            <span>
-              <strong>Hospital Bendaña</strong>
-              <small>Servicios en línea — demo</small>
-            </span>
-          </a>
-          <nav>
-            <a href="/servicios">Servicios</a>
-            <a href="/como-funciona">Cómo funciona</a>
-          </nav>
-        </header>
-        <main>{children}</main>
-        <footer className="site-footer">
-          <span>Demo interna · No procesa pagos reales.</span>
-          <span>Hospital Bendaña</span>
-        </footer>
+        <Providers>
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+        </Providers>
       </body>
     </html>
   );
